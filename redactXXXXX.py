@@ -1,27 +1,29 @@
 import re
-def redact(sent,word,case=False,whole=False):
 """
-Redact with XXXs rosettacode example!
+XXXX redacted
 """
-    word0 = word
-    if not case:
-        word0 = word.lower()
-        
-    res=re.split(r'([^\w])', sent)
-    pre = []
-    for w in res:
-        w0 = w.lower() if not case else w
-        if whole and (word0 == w):
-            pre.append('x'*len(w))
-        elif not whole and re.search(word, w):
-            pre.append('x'*len(w))
-        else:
-            pre.append(w)
+def redact(sent, word, case=False, whole=False, overkill=False):
+    flags = re.I if not case else 0
 
-    return "".join(pre)
+    def replacer(mo):
+        l = mo.end(0) - mo.start(0)
+        return 'X'*l
+
+    word0 = word
+
+    if whole:
+        word0 = r'\b' + word + r'\b'
+    if overkill:
+        word0 = r'\b' + r'\w*' + word + r'\w*' + r'\b'
+        
+    #split so can rejoin later
+    return re.sub(word0, replacer, sent, flags=re.I)
 
 test = "Toms bottom tomato is in his stomach while playing the 'Tom-tom' brand tom-toms. That's so tom."
 
 print(redact(test, 'Tom', case=True, whole=True))
+print(redact(test, 'Tom', case=True, whole=True))
+print(redact(test, 'Tom', case=True, whole=False))
+print(redact(test, 'Tom', case=True, whole=False, overkill=True))
 
 
