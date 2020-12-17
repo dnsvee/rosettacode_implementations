@@ -10,6 +10,7 @@ def readwholefile(name):
 
 if __name__ == '__main__':
     lines = []
+    print(readwholefile('days.txt'))
     with open('days.txt', 'r') as f:
         lines = f.readlines()
 
