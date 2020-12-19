@@ -1,3 +1,3 @@
-import sys
+from sys import stdout, stdin
 
-sys.stdout.buffer.write(sys.stdin.buffer.read(-1))
+stdout.buffer.write(stdin.buffer.read(-1))
