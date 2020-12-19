@@ -1,5 +1,5 @@
 """
-Knapsack problem
+Knapsack problem. Does not work!
 """
 
 class Item:
@@ -38,13 +38,17 @@ class Knapsack:
         self.append("towel", 18, 12, 2)
         self.append("socks", 4, 50)
         self.append("book", 30, 10, 2)
+        self.best = [(0,0) for i in range(0,10)]
+
+        self.items = sorted(self.items, key=lambda x : x.w)
 
     def append(self, n, w, v, c = 1):
         for r in range(0,c):
             self.items.append(Item(n, w, v))
 
     def cand(self, v, c):
-        self.best.append((v,c))
+        self.best.pop()
+        self.best.insert(0, (v,c))
 
     def packsack0(self, cur, value, wght, idx):
         if idx == len(self.items):
@@ -59,13 +63,15 @@ class Knapsack:
         self.packsack0(cur, value, wght, idx+1)
 
     def pack(self):
-        self.packsack0([], 0, 0, 0)
-        self.best = sorted(self.best, key=lambda x : x[0])[0:10]
-        for b in self.best:
-            print("{} value:".format(b[0]), end="")
-            for c in b[1]:
-                print(self.items[c].n, end=" ")
-            print("\n")
+        try:    
+            self.packsack0([], 0, 0, 0)
+        except:
+            self.best = sorted(self.best, key=lambda x : x[0])[0:10]
+            for b in self.best:
+                print("{} value:".format(b[0]), end="")
+                for c in b[1]:
+                    print(self.items[c].n, end=" ")
+                print("\n")
 
 
 Knapsack().pack()
