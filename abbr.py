@@ -105,7 +105,6 @@ djadomingu djaluna djamars djarason djaweps djabièrnè djasabra
 Killachau Atichau Quoyllurchau Illapachau Chaskachau Kuychichau Intichau
 """
 
-
 # for every day create a list of days
 for l in list(map(lambda l: l.split(' '), days.split('\n'))):
 

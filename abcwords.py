@@ -1,5 +1,5 @@
 """
-Show every abc word"
+ABC Words
 """
 
 def readdict():
