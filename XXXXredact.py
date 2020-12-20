@@ -1,6 +1,8 @@
 import re
 """
 XXXX redacted
+
+BUG: Not work for multiple subs in one word  think
 """
 def redact(sent, word, case=False, whole=False, overkill=False):
     caseflag =  0 if case else re.I
