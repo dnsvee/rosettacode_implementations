@@ -1,4 +1,6 @@
-
+"""
+    rosettacode: jewels and stones
+"""
 def howmanyjewels(s, j):
     cnt = 0
     for s0 in s:
