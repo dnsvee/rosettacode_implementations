@@ -1,80 +1,62 @@
 """
-Knapsack problem. Does not work!
+1/0 knapsack problem solved using dynamic proramming
 """
 
-class Item:
-    def __init__(self, n, w, v):
-        self.n = n
-        self.v = v
-        self.w = w
+maxcap = 400
+items = [("", 0, 0),             # dummy item
+         ("map", 9, 150), 
+         ("compass", 13,  35), 
+         ("water",  153, 200), 
+         ("sandwich", 50, 160), 
+         ("glucose", 15,  60), 
+         ("tin", 68,  45),  
+         ("banana", 27,  60), 
+         ("apple", 39,  40), 
+         ("cheese", 23,  30), 
+         ("beer", 52,  10), 
+         ("suntan", 11, 70), 
+         ("camera", 32, 30), 
+         ("tshirt", 24, 15), 
+         ("trousers", 48, 10), 
+         ("umbrella", 73, 40), 
+         ("waterproof trousers", 42, 70), 
+         ("waterproof overclothes", 43, 75), 
+         ("notecase", 22, 80), 
+         ("sunglasses", 7, 20), 
+         ("towel", 18, 12),
+         ("socks", 4, 50), 
+         ("book", 30, 10)]
 
-    def __repr__(self):
-        return "{}:{}:{}".format(self.n,self.w,self.v)
+V = {} 
+# V[(item#, weight)] = value
+for i in range(0,len(items)):
+    for j in range(0,maxcap+1):
+        V[(i,j)] = 0
 
-class Knapsack:
-    def __init__(self):
-        self.items = []
-        self.best = []
-        self.mx = 400
-        self.append("map",      9, 150)
-        self.append("compass", 13,  35)
-        self.append("water",  153, 200, 2)
-        self.append("sandwich", 50, 60, 2)
-        self.append("glucose", 15,  60, 2)
-        self.append("tin", 68,  45, 3)
-        self.append("banana", 27,  60, 3)
-        self.append("apple", 39,  40, 3)
-        self.append("cheese", 23,  30)
-        self.append("beer", 52,  10, 3)
-        self.append("suntan", 11, 70)
-        self.append("camera", 32, 30)
-        self.append("tshirt", 24, 15, 2)
-        self.append("trousers", 48, 105, 2)
-        self.append("umbrella", 73, 40)
-        self.append("waterproof trousers", 42, 70)
-        self.append("waterproof overclothes", 43, 75)
-        self.append("notecase", 22, 80)
-        self.append("sunglasses", 7, 20)
-        self.append("towel", 18, 12, 2)
-        self.append("socks", 4, 50)
-        self.append("book", 30, 10, 2)
-        self.best = [(0,0) for i in range(0,10)]
+# generate table of subsolutions
+for i in range(1,len(items)):
+    for j in range(0,maxcap+1):
+        it = items[i]
+        if it[1] > j:
+            V[(i,j)] = V[(i-1,j)]
+        else:
+            V[(i,j)] = max(V[(i-1,j)], it[2] + V[(i-1,j-it[1])])
 
-        self.items = sorted(self.items, key=lambda x : x.w)
-
-    def append(self, n, w, v, c = 1):
-        for r in range(0,c):
-            self.items.append(Item(n, w, v))
-
-    def cand(self, v, c):
-        self.best.pop()
-        self.best.insert(0, (v,c))
-
-    def packsack0(self, cur, value, wght, idx):
-        if idx == len(self.items):
-            self.cand(value, cur)
-            return
-
-        i = self.items[idx]
-        if i.w + wght < self.mx:
-            c = cur[:]
-            c.append(idx)
-            self.packsack0(c, value+i.v, wght+i.w, idx+1)
-        self.packsack0(cur, value, wght, idx+1)
-
-    def pack(self):
-        try:    
-            self.packsack0([], 0, 0, 0)
-        except:
-            self.best = sorted(self.best, key=lambda x : x[0])[0:10]
-            for b in self.best:
-                print("{} value:".format(b[0]), end="")
-                for c in b[1]:
-                    print(self.items[c].n, end=" ")
-                print("\n")
+# display items selected
+i = len(items)-1
+j = maxcap
+print('Items in the knapsack for total value of {}:'.format(V[(len(items)-1,maxcap)]))
+while i > 0:
+    if V[(i,j)] > V[(i-1,j)]:
+        print(items[i][0])
+        j = j - items[i][1]
+    i = i - 1
 
 
-Knapsack().pack()
+
+
+
+
 
 
 
