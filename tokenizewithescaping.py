@@ -1,24 +1,33 @@
+"""
+tokenize a string with escaping
+"""
+
 txt = "one^|uno||three^^^^|four^^^|^cuatro|"
-print(txt)
 
-escaped = False
-word = []
-for c in txt:
-    if escaped:
+def splitter(txt,sep,esc):
+    escaped = False
+    word = []
+    res = []
+    for c in txt:
+        if escaped:
+            word.append(c)
+            escaped = False
+            continue
+
+        if c == sep:
+            res.append(''.join(word))
+            word = []
+            continue
+
+        if c == esc:
+            escaped = True
+            continue
+
         word.append(c)
-        escaped = False
-        continue
+    res.append(''.join(word))
+    return res
 
-    if c == '|':
-        print(''.join(word))
-        word = []
-        continue
-
-    if c == "^":
-        escaped = True
-        continue
-
-    word.append(c)
+print(splitter(txt,'|','^'))
 
 
 
