@@ -1,30 +1,48 @@
 import re
 """
-XXXX redacted
-
-BUG: Not work for multiple subs in one word  think
+XXXX_redacted
 """
+
 def redact(sent, word, case=False, whole=False, overkill=False):
     caseflag =  0 if case else re.I
+    letter = '[\w\-]'
 
-    def replacer(mo):
-        l = mo.end(0) - mo.start(0)
-        return 'X' * l
-
-    word0 = word
+    word0 = ""
 
     if whole:
-        word0 = r'\b' + word + r'\b'
-    if overkill:
-        word0 = r'\b' + r'\w*' + word + r'\w*' + r'\b'
+        def replacer(mo):
+            if re.fullmatch(mo.group(0), word, caseflag):
+                l = mo.end(0) - mo.start(0)
+                return 'X' * l
+            return mo.group(0)
+        return re.sub(r'[\w\-]+', replacer, sent, flags=caseflag)
+    else:
+        if not overkill:
+            def replacer(mo):
+                l = mo.end(0) - mo.start(0)
+                return 'X' * l
+            return re.sub(word, replacer, sent, flags=caseflag)
+        else:
+            def replacer(mo):
+                if re.search(word, mo.group(0), flags=caseflag):
+                    l = mo.end(0) - mo.start(0)
+                    return 'X' * l
+                return mo.group(0)
+        return re.sub(r'[\w\-]+', replacer, sent, flags=caseflag)
+
+    raise "Invalid arguments"
         
-    return re.sub(word0, replacer, sent, flags=caseflag)
 
-test = "Toms bottom tomato is in his stomach while playing the 'Tom-tom' brand tom-toms. That's so tom."
+test = "Tom? Toms bottom tomato is in his stomach while playing the \"Tom-tom\" brand tom-toms. That's so tom."
 
-print(redact(test, 'Tom', case=True, whole=True))
-print(redact(test, 'Tom', whole=True))
-print(redact(test, 'Tom', whole=False))
-print(redact(test, 'Tom', whole=False, overkill=True))
+word = 'Tom'
+print('Redact {}:'.format(word))
+print('[w|s|n] ', redact(test, word, case=True, whole=True, overkill=False))
+print('[w|i|n] ', redact(test, word, case=False, whole=True, overkill=False))
+print('[p|s|n] ', redact(test, word, case=True, whole=False, overkill=False))
+print('[p|i|n] ', redact(test, word, case=False, whole=False, overkill=False))
+print('[p|s|o] ', redact(test, word, case=True, whole=False, overkill=True))
+print('[p|i|o] ', redact(test, word, case=False, whole=False, overkill=True))
+
 
 
