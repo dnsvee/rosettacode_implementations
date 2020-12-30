@@ -1,5 +1,5 @@
 """
-1/0 bounded knapsack problem solved using dynamic programming.
+Knapsack problem 0-1
 """
 
 maxcap = 400
@@ -27,8 +27,7 @@ items = [("", 0, 0),             # dummy item
          ("socks", 4, 50), 
          ("book", 30, 10)]
 
-# Dict with (items#, weight) as key. Represents maximum value achieved for first items# limited to maximum weight.
-# V[(11, 100)] represents optimal vlaue for first 11 items upto 100 units of weight.
+# V[(11, 100)] represents optimal value for any selection of first 11 items upto 100 units of weight.
 V = {} 
 for i in range(0,len(items)):
     for j in range(0,maxcap+1):
@@ -49,6 +48,7 @@ j = maxcap
 print('Items in the knapsack for total value of {}:'.format(V[(len(items)-1,maxcap)]))
 while i > 0:
     if V[(i,j)] > V[(i-1,j)]:
+        # item selected
         print(items[i][0])
         j = j - items[i][1]
     i = i - 1
