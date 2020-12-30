@@ -1,5 +1,6 @@
 txt = "Hello,How,Are,You,Today"
-for t in txt.split(','):
-    print(t)
+arr = txt.split(',')
+print(".".join(arr), end='')
+print('.')
   
 
