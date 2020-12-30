@@ -1,18 +1,18 @@
-import itertools
-perm = itertools.permutations
-
+"""
+Zebra puzzle
+"""
 class Occ:
     def __init__(s, **kw):
-        s.nat = kw.get('nat',None)
-        s.dri = kw.get('dri',None)
-        s.smo = kw.get('som',None)
-        s.col = kw.get('col',None)
-        s.pet = kw.get('pet',None)
+        s.nat = kw.get('nat',None) # nationality
+        s.dri = kw.get('dri',None) # drinks
+        s.smo = kw.get('som',None) # smokes
+        s.col = kw.get('col',None) # color of house
+        s.pet = kw.get('pet',None) # pet
 
-    def __repr__(self):
-        return '{} {} {} {} {}'.format(self.nat, self.dri, self.smo, self.col, self.pet)
-        pass
+    def __repr__(s):
+        return '({}, {}, {}, {}, {})'.format(s.nat, s.dri, s.smo, s.col, s.pet)
 
+# inital information
 H = [Occ(nat='norwegian'), Occ(col='blue'), Occ(dri='milk'), Occ(), Occ()]
 
 def rule2():
@@ -71,8 +71,8 @@ def rule14():
                 H[g].nat, H[g].smo = None, None 
 
 
+# white house to the right of green
 def rule5():
-        # white house to right of green
         for h in range(0,4):
             if H[h].col == 'green':
                 if not H[h+1].col:
@@ -80,6 +80,7 @@ def rule5():
                      rule12()
                      H[h+1].col = None
 
+# next to the house where they smoke dunhill somebody owns a horse
 def rule12():
     for i in range(0,5):
         if H[i].smo == 'dunhill':
@@ -93,7 +94,9 @@ def rule12():
                 rulelast()
                 H[i+1].pet = None
 
-
+# blend smoker and water drinker live next to each other
+# next to blend smoker they own cats
+# remaining house owner owns zebra
 def rulelast():
     for i in range(0,5):
         if H[i].smo == None:
@@ -116,7 +119,8 @@ def rulelast():
         if H[i].pet == None:
             H[i].pet = 'zebra'
 
-    print(H)
+    # print result
+    print(H) 
 
-
+# start here
 rule2()
