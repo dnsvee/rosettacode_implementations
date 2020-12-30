@@ -1,7 +1,6 @@
 import json
 """
-Abbreviations (automatic):
-    For every line (7 names for every day of the week) find the shortest word length to create a distint abbreviation.
+Abbreviations, automatic
 """
 
 days="""
@@ -111,11 +110,10 @@ for l in list(map(lambda l: l.split(' '), days.split('\n'))):
     # minium word size per line
     m = min(map(lambda x: len(x), l))
     for r in range(1,m):
+        # of each day slice first r characters and create set with result
+        s = set(map(lambda x: x[0:r], l))
 
-        # create set of abbreviations. Start with abbreviation size 1 upto length of shortest word
-        s=set(map(lambda x: x[0:r], l))
-
-        # if resultign set contains 7 items of distinct abbreviations
+        # if resulting set contains 7 items of distinct words then minimum abbreviation is found
         if len(s) == 7:
             print(r,s)
             break
