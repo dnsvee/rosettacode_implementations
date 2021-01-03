@@ -2,7 +2,7 @@
 4 Rings puzzle
 """
 
-digs = [1,2,3,4,5,6,7]
+digs = list(range(3,3+7))
 
 a0 = []
 a1 = digs[:]
@@ -29,7 +29,7 @@ while len(a1):
                     f = X - e - d
                     g = X - f
                     if f != g and f in [*e0,*e1] and g in [*e0, *e1]:
-                        print(X, a+b, b+c+d, d+e+f, f+g, ":", a, b, c, d, e, f, g)
+                        print('Sum={} a={} b={} c={} d={} e={} f={} g={}'.format(X, a, b, c, d, e, f, g))
 
                     e0.append(e)
 
