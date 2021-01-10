@@ -3,7 +3,8 @@ import random, time
 Implements some popular sorting algorithms
 """
 
-bunch = [random.randrange(0,1<<20) for i in range(0,1<<20)]
+times = 1<<8
+bunch = [random.randrange(0,times) for i in range(0,times)]
 
 # chcks if array is sorted min > max
 def checkit(b):
@@ -39,11 +40,11 @@ def swapsort(b):
     return b
 
 # insertion sort 
-def selsort(b):
-    i = 1
-    while i < len(b):
-        j = i
-        while j >= 0 and b[j-1] > b[j]:
+def inssort(b):
+    i = 0
+    while i < len(b)-1:
+        j = i+1
+        while j >= 1 and b[j-1] > b[j]:
                 b[j], b[j-1] = b[j-1], b[j]
                 j -= 1
         i += 1
@@ -129,13 +130,14 @@ def heapsort(a):
 
 def testthese(*totest):
     counts = []
-    payload = [random.randrange(0,1<<16) for i in range(0,1<<16)]
+    payload = [random.randrange(0,1<<10) for i in range(0,1<<10)]
     for n, f in totest:
+        print('testing {}'.format(n))
         counts.append(clockit(f, n, payload[:]))
     if not all(map(lambda x : len(x) == len(counts[0]), counts)):
         print("inconsistent results")
 
-testthese(("quicksort", qsort), ("heapsort", heapsort), ("mergesort", mergesort), ("builtinsort", builtinsort))
+testthese(("insertion sort", inssort), ("swap sort", swapsort), ("quicksort", qsort), ("heapsort", heapsort), ("mergesort", mergesort), ("builtinsort", builtinsort))
 
 
 
