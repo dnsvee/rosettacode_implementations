@@ -17,6 +17,11 @@ R = [St(0), St(3), St(0), St(2), St(0), St(4), St(0)]
 i = 1
 m = 0
 
+def fixit(over, l):
+    m = 0
+    for o in over:
+        l(o, m)
+
 while i < len(R)-2:
     R[i].l = m
     if R[i].h > m:
