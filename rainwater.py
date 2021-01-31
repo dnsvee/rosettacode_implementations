@@ -36,6 +36,7 @@ while i > 0:
         m = R[i].h
     i -= 1
 
+# make a nice ASCII graph
 for h in range(5, -1, -1):
     for i in range(0, len(R)):
         if R[i].h >= h:
