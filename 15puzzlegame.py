@@ -49,12 +49,18 @@ def shuffle(B, steps, x0, y0):
 
     return x0, y0
 
+while True:
+    val = int(input("amount to randomly shuffle board> "))
+    if val > 0:
+        break
+    
 print("move the zero by passing 'w' 'e' 's' or 'n' or a combination of them as movement commands eg. wesn")
-x0, y0 = shuffle(B, 4, x0, y0)
+x0, y0 = shuffle(B, val, x0, y0)
+moves = 0
 while True:
     printboard(B)
     if issolved(B): 
-        print('solved')
+        print('solved in ', moves, ' moves')
         sys.exit(0)
 
     i = input("> ")
@@ -72,11 +78,12 @@ while True:
         if c == 'e' and x0 < 4: x1 = x0 + 1
         if c == 'n' and y0 > 1: y1 = y0 - 1
         if c == 's' and y0 < 4: y1 = y0 + 1
+        if x1 != x0 or y1 != y0:
+            moves += 1
 
         B[(y1,x1)], B[(y0,x0)] = B[(y0,x0)], B[(y1,x1)]
 
         x0, y0 = x1, y1
 
-    print(B)
 
 
