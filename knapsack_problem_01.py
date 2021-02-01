@@ -1,9 +1,11 @@
 """
-Knapsack problem 0-1
+Knapsack problem 0-1. Example from rosettacode.
 """
 
-maxcap = 400
-items = [("", 0, 0),             # dummy item
+maxcap = 400 # max weight
+
+# dummy item
+items = [("", 0, 0),             
          ("map", 9, 150), 
          ("compass", 13,  35), 
          ("water",  153, 200), 
@@ -34,10 +36,10 @@ for i in range(0,len(items)):
         V[(i,j)] = 0
 
 # Generate table of subsolutions
-for i in range(1,len(items)):
+for i in range(1,len(items)):  
     for j in range(0,maxcap+1):
         it = items[i]
-        if it[1] > j: 
+        if it[1] > j: # current item to big to fit
             V[(i,j)] = V[(i-1,j)]
         else:
             V[(i,j)] = max(V[(i-1,j)], it[2] + V[(i-1,j-it[1])])
@@ -45,10 +47,11 @@ for i in range(1,len(items)):
 # Display all items selected tor optimal solution
 i = len(items)-1
 j = maxcap
-print('Items in the knapsack for total value of {}:'.format(V[(len(items)-1,maxcap)]))
+print('Items in the knapsack for total value of {}:'.format( V[(len(items) - 1, maxcap)]) )
+
 while i > 0:
+    # see if item is included
     if V[(i,j)] > V[(i-1,j)]:
-        # item selected
         print(items[i][0])
         j = j - items[i][1]
     i = i - 1
