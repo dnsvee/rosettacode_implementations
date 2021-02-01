@@ -19,7 +19,7 @@ def wildcard1(s, p, i, j):
 def wildcard(s, p):
     return wildcard0(s, p, 0, 0)
 
-print(wildcard("babab", "ba*bc"))
+print(wildcard("babab", "bab**"))
 
 
 

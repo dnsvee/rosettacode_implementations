@@ -1,20 +1,30 @@
 """
-Zebra puzzle
+Zebra puzzle aka Einstein's puzzle
 """
+
 class Occ:
+    """
+        Models a single occupant
+    """
+
     def __init__(s, **kw):
         s.nat = kw.get('nat',None) # nationality
-        s.dri = kw.get('dri',None) # drinks
-        s.smo = kw.get('som',None) # smokes
+        s.dri = kw.get('dri',None) # drinks what
+        s.smo = kw.get('som',None) # smokes what
         s.col = kw.get('col',None) # color of house
         s.pet = kw.get('pet',None) # pet
 
     def __repr__(s):
         return '({}, {}, {}, {}, {})'.format(s.nat, s.dri, s.smo, s.col, s.pet)
 
-# inital information
+# inital information known from the start
 H = [Occ(nat='norwegian'), Occ(col='blue'), Occ(dri='milk'), Occ(), Occ()]
 
+if __name__ == '__main__':
+    # start here
+    rule2()
+
+# rule functions try out every possible cominarion of occupants
 def rule2():
     for a in range(2,5):
         H[a].nat, H[a].col = 'english', 'red'
@@ -95,8 +105,8 @@ def rule12():
                 H[i+1].pet = None
 
 # blend smoker and water drinker live next to each other
-# next to blend smoker they own cats
-# remaining house owner owns zebra
+# next to blend smoker; they own cats
+# remaining house is the owner of the zebra
 def rulelast():
     for i in range(0,5):
         if H[i].smo == None:
@@ -119,8 +129,6 @@ def rulelast():
         if H[i].pet == None:
             H[i].pet = 'zebra'
 
-    # print result
+    # print final result
     print(H) 
 
-# start here
-rule2()
