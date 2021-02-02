@@ -5,14 +5,15 @@ def wildcard0(s, p, i, j):
         while p[j] == s[i] or p[j] == '?':
             i += 1
             j += 1
-    except:
-        return len(p) == j and len(s) == i
+    finally:
+        if len(p) == j and len(s) == i:
+            return True
 
     # only here if * 
     return wildcard1(s, p, i, j)
 
 def wildcard1(s, p, i, j):
-    while p[j] == '*':
+    while p[j:j+1] == '*':
         if wildcard0(s, p, i, j + 1):
             return True
         i += 1
@@ -24,14 +25,15 @@ def wildcard(s, p):
 
 class TestMe(unittest.TestCase):
     def test_me(self):
-        istrue = self.assertTrue
-        istrue(wildcard("babab", "bab**"))
-        istrue(wildcard("abc", "?b?"))
-        istrue(wildcard("aaaabbb", "a***b"))
-        istrue(wildcard("acdcb", "a***b"))
+        istrue = lambda x, y : self.assertTrue(wildcard(x, y))
+        istrue("babab", "bab**")
+        istrue("abc", "?b?")
+        istrue("aaaabbb", "a***b")
+        istrue("acdcb", "a***b")
         
 
-a = wildcard("acdcb", "acdcb*")
+a = wildcard("acdcb", "a*c")
+#a = wildcard("acdcb", "a*c?b")
 print(a)
 
 

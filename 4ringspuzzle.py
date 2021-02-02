@@ -8,6 +8,9 @@ a0 = []
 a1 = digs[:]
 X = 0
 
+""" 
+Solves an equation of the form: 
+    """
 while len(a1):
     a = a1.pop()
     b0 = []
