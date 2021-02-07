@@ -9,28 +9,28 @@ for y in range(0, 8):
     for x in range(0, 8):
         board[y * 16 + x] = 0
 
-def poss(y, x):
+def isposs(y, x):
     # gets all possible knights locations not visited
     r = board.get(y * 16 + x, None)
-    return (r is not None) and (r == 0)
+    return r == 0
 
 def countposs(y, x):
     c = 0
-    if poss(y + 2, x - 1):
+    if isposs(y + 2, x - 1):
         c += 1
-    if poss(y + 2, x + 1):
+    if isposs(y + 2, x + 1):
         c += 1
-    if poss(y + 1, x - 2):
+    if isposs(y + 1, x - 2):
         c += 1
-    if poss(y + 1, x + 2):
+    if isposs(y + 1, x + 2):
         c += 1
-    if poss(y - 2, x - 1):
+    if isposs(y - 2, x - 1):
         c += 1
-    if poss(y - 2, x + 1):
+    if isposs(y - 2, x + 1):
         c += 1
-    if poss(y - 1, x - 2):
+    if isposs(y - 1, x - 2):
         c += 1
-    if poss(y - 1, x + 2):
+    if isposs(y - 1, x + 2):
         c += 1
     return c
 
@@ -52,8 +52,8 @@ def tour(y, x, c):
 
     poss = []
     for i, j in kmoves:
-        ct = countposs(y + i, x + j)
-        if ct > 0:
+        if isposs(y + i, x + j):
+            ct = countposs(y + i, x + j)
             poss.append((y + i, x + j, ct))
 
     poss = sorted(poss, key=lambda x : x[2])
