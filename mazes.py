@@ -15,79 +15,22 @@ class Maze:
         if not(0 <= y < self.h) or not(0 <= x < self.w): return -1
         return self.a[y * self.w + x]
 
-    def kruskal(self):
-        E = []
-        M = [0] * self.w * self.h
-        for y in range(0, self.h):
-            for x in range(0, self.w):
-                if y + 1 < self.h:
-                    E.append((y * self.w + x, (y + 1) * self.w + x, 4, 1))
-                if x + 1 < self.w:
-                    E.append((y * self.w + x, y * self.w + x + 1, 2, 8))
-        random.shuffle(E)
-
-        S = [i for i in range(0, self.w * self.h)]
-
-        def root(a):
-            while S[a] != a:
-                S[a] = S[S[a]]
-                a = S[a]
-            return a
-
-        for e in E:
-            a, b, e0, e1 = e
-            a0 = root(a)
-            b0 = root(b)
-            if a0 != b0:
-                S[b0] = a0
-                M[a] = M[a] | e0
-                M[b] = M[b] | e1
-
-        return M
 
     # start (0,0)
-    def recback(self, cur):
-
-        cells = []
-        while True:
-            y, x = divmod(cur, self.w)
-
-            l = []
-
-            if self.get(y + 1, x) == 0: l.append((y + 1, x, 4, 1))
-            if self.get(y - 1, x) == 0: l.append((y - 1, x, 1, 4))
-            if self.get(y, x + 1) == 0: l.append((y, x + 1, 2, 8))
-            if self.get(y, x - 1) == 0: l.append((y, x - 1, 8, 2))
-
-            if len(l) > 0:
-                y0, x0, d0, d1 = random.choice(l)
-                c = y0 * self.w + x0
-                self.a[c  ] = self.a[c]   | d1
-                self.a[cur] = self.a[cur] | d0
-                cells.append(cur)
-                cur = c
-                continue
-
-            if len(cells) == 0:
-                break
-
-            cur = cells.pop()
-
-        return self.a
 
 
     def eller(self, W, H):
         M = [0] * W * H
         S = [i for i in range(0, W * H)]
 
-    def printmaze(self, M):
-        syms = {10: '─', 5 : '│', 0b11 : '└', 6 : '┌', 12 : '┐', 9 : '┘', 7 : '├', 13 : '┤', 11 : '┴', 14 : '┬', 15 : '┼', 1 : '╵', 2 : '╶', 4 : '╷', 8 : '╴' }
-        for y in range(0, self.h):
-            for x in range(0, self.w):
-                c = M[y * self.w + x]
-                print(syms.get(c, '?'), end='')
+def printmaze(M, W, H):
+    syms = {10: '─', 5 : '│', 0b11 : '└', 6 : '┌', 12 : '┐', 9 : '┘', 7 : '├', 13 : '┤', 11 : '┴', 14 : '┬', 15 : '┼', 1 : '╵', 2 : '╶', 4 : '╷', 8 : '╴' }
+    for y in range(0, H):
+        for x in range(0, W):
+            c = M[y * W + x]
+            print(syms.get(c, '?'), end='')
 
-            print()
+        print()
 
 
 def recdiv(M, W, H, W0, W1, H0, H1):
@@ -146,15 +89,90 @@ def divmethod(W, H):
 
     return M
 
+def kruskal(W, H):
+    """
+    Uses a randomized version of Kruskal to gen a maze
+    """
+    M = [0] * W * H
+    E = []
 
-m = Maze( 32, 32)
+    for y in range(0, H):
+        for x in range(0, W):
+            if y + 1 < H:
+                E.append((y * W + x, (y + 1) * W + x, 4, 1))
+            if x + 1 < W:
+                E.append((y * W + x, y * W + x + 1, 2, 8))
+    random.shuffle(E)
+
+    S = [i for i in range(0, W * H)]
+
+    def root(a):
+        while S[a] != a:
+            S[a] = S[S[a]]
+            a = S[a]
+        return a
+
+    for e in E:
+        a, b, e0, e1 = e
+        a0 = root(a)
+        b0 = root(b)
+        if a0 != b0:
+            S[b0] = a0
+            M[a] = M[a] | e0
+            M[b] = M[b] | e1
+
+    return M
+
+def recback(W, H):
+    """
+    Uses the recusrive backtracking method. Starts at 0, 0
+    """
+
+    M = [0] * W * H
+
+    def get(y, x):
+        if not(0 <= y < H) or not(0 <= x < W): return -1
+        return M[y * W + x]
+
+    cur = 0 # (0, 0)
+
+    cells = []
+    while True:
+        y, x = divmod(cur, W)
+
+        l = []
+
+        if get(y + 1, x) == 0: l.append((y + 1, x, 4, 1))
+        if get(y - 1, x) == 0: l.append((y - 1, x, 1, 4))
+        if get(y, x + 1) == 0: l.append((y, x + 1, 2, 8))
+        if get(y, x - 1) == 0: l.append((y, x - 1, 8, 2))
+
+        if len(l) > 0:
+            y0, x0, d0, d1 = random.choice(l)
+            c = y0 * W + x0
+            M[c  ] = M[c]   | d1
+            M[cur] = M[cur] | d0
+            cells.append(cur)
+            cur = c
+            continue
+
+        if len(cells) == 0:
+            break
+
+        cur = cells.pop()
+
+    return M
+
+
 print('Recursive backtracking ...')
-mz = m.recback(0)
-m.printmaze(mz)
+mz = recback(32, 32)
+printmaze(mz, 32, 32)
 print()
+
 print('Kruskal ...')
-mz = m.kruskal()
-m.printmaze(mz)
+mz = kruskal(32, 32)
+printmaze(mz, 32, 32)
+print()
 
 divmethod(32,32)
 
