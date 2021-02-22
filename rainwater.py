@@ -1,43 +1,42 @@
 """
-Solves rainwater trapping problem.
+Solves rainwater trapping problem. 
 """
+
 import collections
 
-class St:
-    l = 0 # min height left
-    r = 0 # min height right
-    h = 0 # height of loc.
+class Col:
+    l = 0 # max height left
+    r = 0 # max height right
+    h = 0 # height 
+
     def __init__(self, h):
         self.h = h
 
     def __repr__(self):
         return "%d %d %d" % (self.l, self.h, self.r)
 
-# example
-R = [St(0), St(3), St(0), St(2), St(0), St(4), St(0)]
+# an example. include two stacks of 0 height to the left and right to make computations easier
+R = [Col(i) for i in [0, 3, 0, 2, 0, 4, 3, 5, 1, 6, 0]]
 
 # max height to the left
-i = 1
-m = 0
-while i < len(R)-2:
+m = 0 # maximum so far
+for i in range(1, len(R) - 2):
     R[i].l = m
+    # if stack is higher than max then new max is height of stack
     if R[i].h > m:
         m = R[i].h
-    i += 1
-
 
 # max height to the right
 i = len(R)-2
 m = 0
-while i > 0:
+for i in range(len(R) - 2, 0, -1):
     R[i].r = m
     if R[i].h > m:
         m = R[i].h
-    i -= 1
 
 # make a nice ASCII graph
-for h in range(5, -1, -1):
-    for i in range(0, len(R)):
+for h in range(12, -1, -1):
+    for i in range(1, len(R) - 1):
         if R[i].h >= h:
             print('#', end='')
             continue

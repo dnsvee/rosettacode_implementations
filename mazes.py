@@ -5,25 +5,10 @@ Implements  a couple of maze generation algorythms with ascii display
 import random
 rint = random.randrange
 
-class Maze:
-    def __init__(self, w, h):
-        self.w = w
-        self.h = h
-        self.a = [0] * w * h
-
-    def get(self, y, x):
-        if not(0 <= y < self.h) or not(0 <= x < self.w): return -1
-        return self.a[y * self.w + x]
-
-
-    # start (0,0)
-
-
-    def eller(self, W, H):
-        M = [0] * W * H
-        S = [i for i in range(0, W * H)]
-
 def printmaze(M, W, H):
+    """ 
+    outputs a simple ascii diagram of the map
+    """
     syms = {10: '─', 5 : '│', 0b11 : '└', 6 : '┌', 12 : '┐', 9 : '┘', 7 : '├', 13 : '┤', 11 : '┴', 14 : '┬', 15 : '┼', 1 : '╵', 2 : '╶', 4 : '╷', 8 : '╴' }
     for y in range(0, H):
         for x in range(0, W):
@@ -31,7 +16,6 @@ def printmaze(M, W, H):
             print(syms.get(c, '?'), end='')
 
         print()
-
 
 def recdiv(M, W, H, W0, W1, H0, H1):
     Hx = H1 - H0
@@ -63,8 +47,6 @@ def recdiv(M, W, H, W0, W1, H0, H1):
         recdiv(M, W, H, W0, W1, a, H1)
 
 def divmethod(W, H):
-    syms = {10: '─', 5 : '│', 3 : '└', 6 : '┌', 12 : '┐', 9 : '┘', 7 : '├', 13 : '┤', 11 : '┴', 14 : '┬', 15 : '┼', 1 : '╵', 2 : '╶', 4 : '╷', 8 : '╴' }
-
     M = [0b1111] * W * H
 
     for y in range(0, H):
@@ -81,11 +63,6 @@ def divmethod(W, H):
     M[(W-1)*W+W-1] = 9
 
     recdiv(M, W, H, 0, W, 0, H)
-
-    for y in range(0, H):
-        for x in range(0, W):
-            print(syms[M[y * W + x]], end='')
-        print()
 
     return M
 
@@ -174,5 +151,8 @@ mz = kruskal(32, 32)
 printmaze(mz, 32, 32)
 print()
 
-divmethod(32,32)
+print('Recursive division')
+mz = divmethod(32,32)
+printmaze(mz, 32, 32)
+print()
 
