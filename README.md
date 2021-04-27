@@ -1,4 +1,7 @@
 # rosettacode_implementations
-My personal implementations of Rosettacode tasks.
+My personal implementations of a mish-mash of random algorithms and problems.
 
-Low quality! Work in progress! Turn back!
+Source:
+Leetcode 
+Rosettacode
+
